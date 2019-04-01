@@ -1,4 +1,5 @@
-def returnMatches(worksheet, matches):
+def returnMatches(worksheet, searchEntry):
+    matches = worksheet.findall(searchEntry)
     if matches:
         # return values of matched cells
         for cell in matches:
