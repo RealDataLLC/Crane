@@ -1,3 +1,6 @@
+"""
+obtain searchEntry match from a specific worksheet
+"""
 def returnMatches(worksheet, searchEntry):
     matches = worksheet.findall(searchEntry)
     if matches:
