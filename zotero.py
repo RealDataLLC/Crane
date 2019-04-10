@@ -11,8 +11,10 @@ items = zot.top(limit=5)
 #for item in items:
 #    print('Item: %s | Key: %s' % (item['data']['itemType'], item['data']['key']))
 
-first_ten = zot.items(limit=10)
-#for item in first_ten:
+#searching by tag
+first_ten = zot.items(tag = "Wind Power", limit=10)
+for item in first_ten:
+    print(item)
 
-
-zot.dump("N28JG232", filename = "ex.pdf")
+#downloading pdf by ID
+#zot.dump("N28JG232", filename = "ex.pdf")
