@@ -1,0 +1,31 @@
+,0,1,2,3,4,5,6
+0,table 13.3.6: latin america: cO2 emissions mill t/a,2012,2020,2025,2030,2040,2050
+1,condensation power plants,248,289,313,338,430,572
+2,hard coal (& non-renewable waste),34,65,73,80,107,200
+3,lignite,10,9,9,9,10,11
+4,gas,101,113,144,175,250,302
+5,oil,67,61,48,35,21,10
+6,diesel,37,40,39,38,43,50
+7,combined heat and power plants,15,14,14,13,12,12
+8,hard coal (& non-renewable waste),1,0,0,0,0,0
+9,lignite,0,0,0,0,0,0
+10,gas,10,10,9,8,8,7
+11,oil,4,4,4,4,4,4
+12,co2 emissions power and chp plants,263,303,327,351,443,584
+13,hard coal (& non-renewable waste),35,65,74,80,107,200
+14,lignite,10,9,9,9,10,11
+15,gas,111,123,153,183,258,309
+16,oil & diesel,107,106,91,78,67,64
+17,co2 intensity (g/kWh),,,,,,
+18,without credit for chp heat,,,,,,
+19,co2 intensity fossil electr. generation,643,636,579,538,501,520
+20,co2 intensity total electr. generation,216,193,180,170,172,195
+21,co2 emissions by sector,"1,226","1,419","1,561","1,703","1,989","2,176"
+22,% of 1990 emissions (578 mill t),245%,245%,270%,295%,344%,377%
+23,industry1,262,334,370,405,479,514
+24,other sectors1,130,165,193,220,268,293
+25,transport,470,537,584,630,690,677
+26,power generation2,248,289,313,338,430,572
+27,other conversion3,116,94,102,109,122,120
+28,population (mill.),485,526,549,569,601,622
+29,co2 emissions per capita (t/capita),2.5,2.7,2.8,3.0,3.3,3.5
