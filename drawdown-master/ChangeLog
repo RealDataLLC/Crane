@@ -1,0 +1,242 @@
+Sept 5 - 7, 2018
+<code>/earth hackathon at the Internet Archive in San Francisco.
+Initial commits to:
++ add a Heroku server app in Python
++ implement VBA-WEB in Excel
++ move the first set of calculations out of Excel and into Python
++ construct unit+integration tests
++ set up continuous integration & deployment
+
+Sept 10 - 14, 2018
++ start/stop a flask server in excel integration test
++ make access to Excel more robust w/ retries for spurious failures
++ add a shell-based test to run a local flask server & check expected values
++ add Makefiles to run all tests and run pylint
++ add a ChangeLog to report progress
+
+Sep 17 - 21, 2018
++ implemented the first two columns of the First Cost tab, end to end.  
+  Recorded a video demonstrating the Excel side of this: https://youtu.be/-XvpqbkgytM
+  Recorded a video demonstrating test_excel_integration.py: https://youtu.be/HLL7HrFcmjc
+
++ WIP change to move Visual Basic code out of the Excel file and into  
+  external *.bas files, in https://gitlab.com/codeearth/drawdown/tree/excel_files
+  Unfortunately after loading the basic code from external files, something
+  in Excel seems to become corrupted and the spreadsheet can no longer be
+  saved. It just gets an error.
+  We'll work on figuring out why, until then the CL cannot go into the tree.
+
+Sep 24 - 28, 2018
++ completed the First Cost tab, end to end
++ draft software spec
+  https://docs.google.com/document/d/18nUKV-qltsaSD8kZd5gHswQu82Ot9rg19KIU8_eOisY/comment
+
+Oct 1 - 5, 2018
++ implemented 80% of Unit Adoption module, 24 out of 30 tables.
+
+Oct 8 - 12, 2018
++ completed Unit Adoption module
+  Video demonstrating the Unit Adoption module: https://youtu.be/FSANPCOt9zQ
++ incorporated feedback on draft software spec:
+  https://docs.google.com/document/d/18nUKV-qltsaSD8kZd5gHswQu82Ot9rg19KIU8_eOisY/comment
++ commenced development on Operating Cost module, ~10% done
+
+Oct 15 - 19, 2018
++ sped up Excel population of results by at least 400%, by pausing
+  calculations at the start and re-enabling after all results have been
+  deserialized. Before and After video: https://youtu.be/O86W_sXxzKw
++ recorded video about the multiple levels of automated testing (unit,
+  integration, and system): https://youtu.be/ipZrQWuMU3w
++ more progress on Operating Cost.
+  implemented annual breakout table, added Excel integration test coverage.
+
+Oct 22 - 26, 2018
++ implement 80% of the Operating Cost module.
++ implement more of the Emissions Factors module, preparing to start on co2calc.
+
+Oct 29 - Nov 2, 2018
++ completed Operating Cost module.
++ completed Adoption Data module.
+
+Nov 5 - 9, 2018
++ completed 50% of Helper Tables module.
++ start moving solarpvutil specifics out of model/* and into solution/*
++ experimenting with Jupyter notebook support (not checked into repo yet)
+
+Nov 12 - 16, 2018
++ completed Helper Tables module.
++ completed CO2 Calcs and CH4 Calcs modules.
+
+Nov 19 - 23, 2018
++ completed TAM Data module (which is quite large).
+
+Nov 26 - 30, 2018
++ check in first Jupyter notebook, for solarpvutil.
++ fixes im tam.py: single source, PDS support.
+
+Dec 17 - 21, 2018
++ Make unitadoption, helpertables, firstcost, operartingcost, co2calcs,
+  ch4calcs, & emissionsfactors be self-contained. Take all arguments
+  in the constructor, and add a to_dict() method to return all results.
+  This will remove the need for glue code in app.py, glue code which
+  would otherwise have to be duplicated for every solution using those
+  modules.
+
+Dec 24 - 28, 2018
++ use the per-module to_dict() methods in app.py.
+  Remove the glue code for each module to call all of the functions and
+  assemble the response.
++ add a /solarpvutil endpoint, and make Excel use it.
+  This is an impactful change: Excel is no longer providing inputs to
+  the model, Excel is now solely used as an output to provide a way for
+  automated tests to compare the old and new implementations.
++ add a /solarpvroof endpoint, a second solution.
+  We do not have a SolarPVRooftop Excel file suitable for checking in,
+  test_excel_integration.py does not yet check this model. The more
+  basic tests in solution/test_solutions.py do test it.
+
+Dec 31, 2018 - Jan 4, 2019
++ refactor TAM and group handling.
+  TAM data sources are widely shared between solutions, so they are now
+  centralized in data/*. The data has also been reorganized into one
+  CSV file for each source, allowing sources to be updated in a
+  straightforward way.
+  Move Ambitious/Baseline/Conservative handling into each solution, and
+  remove the original data_sources.py implementation.
++ add Variable Meta-Analysis module.
+  Combines and summarizes multiple data sources to a (mean, high, low)
+  tuple. These values provide guidance for setting appropriate values,
+  though human researcher review sets the value used in the model.
+
+Jan 7 - 11, 2019
++ Support multiple scenarios.
+  Each solution generally contains a number of scenarios, which are
+  collections of inputs and assumptions. Add support for scenarios
+  within a solution by extending test_excel_integration.py to test
+  multiple scenarios within a solution. Aadd all six existing
+  scenarios to the solarpvutil solution.
++ remove per-module URL endpoints.
+  We use /operatingcost, /adoptiondata, etc earlier in the dev effort
+  but have now switched over to using /solarpvutil. Remove the code
+  and the test cases.
++ progress on Jupyter notebook
+  Added VMA, Detailed Results, and Operating Cost tabs with basic displays
+  of data.
+
+Jan 14 - 18, 2019
++ all scenarios in two solutions
+  Implemented all six scenarios in each of the SolarPVUtil and SolarPVRoof
+  solutions, and made the Jupyter Notebook support display from multiple
+  solutions simultaneously.
++ improve performance via caching
+  all arguments are passed to __init__, functions on the models do not
+  take arguments. Therefore they will always return the same result, so
+  cache it. Speeds completion on integration test and Jupyter by 40%.
++ Support running via mybinder.org
+  Populate a binder directory to run from mybinder.org.
+  https://mybinder.org/v2/gl/codeearth%2Fdrawdown/master?urlpath=lab/tree/Drawdown.ipynb
+
+Jan 21 - 25, 2019
++ implement two Land modules: aez.py and tla.py
+  AEZ = Agro-Ecological Zoning, classifying land area into zones for analysis.
+  TLA = Total Land Area, the total addressible market for land solutions.
+  This is a big step in supporting the Land solutions.
++ add scenario extraction in solution_xls_extract
+  Code generation from Excel files to create solutions. We intend to handle
+  most of the ~90 solutions via code generation not manual effort.
+
+Jan 28 - Feb 1, 2019
++ add Custom Adoption, and global sequestration table in CO2Calcs
+  More module support for LAND solutions.
++ add ConcentratedSolar solution
+  Generated from Excel using tools/solution_xls_extract
++ fixes in regional data and NaN handling
+
+Feb 4 - Feb 8, 2019
++ extend CO2Calcs for Land solutions
++ add LandfillMethane solution
+  Generated from Excel using tools/solution_xls_extract
++ UI: add Overview tab
+  Includes a solution list and a nested donut chart of solutions and
+  sectors, both sorted by CO2 reduction. Experiment with making the donut
+  chart interactive with a slider to control peak population estimate.
+
+Feb 11 - Feb 15, 2019
++ Jupyter: reformat tables, add graphs
+  Polishing to support demos of the system.
++ Fix Excel VBAWEB after Mac Excel 16.16.7 update
+
+Feb 18 - Feb 22, 2019
++ add solutions: MicroWind, Biomass, OnshoreWind, OffshoreWind.
++ fix small mismatches between Python & Excel
+  a) subtle difference in rounding
+  b) PDS and ref adoption in 2050 calculation
++ write code generation to extract Custom PDS Adoption data.
+
+Feb 25 - Mar 1, 2019
++ Add solution/biogas
++ redo test_excel_integration to read Excel file directly.
+
+Mar 4 - Mar 8, 2019
++ add Improved Cook Stoves, In-stream Hydro.
++ reimplement Excel integration test for robust operation.
++ fix small mismatches between Python & Excel
+  a) single_source only applies for trend
+  b) allow different source cases per region
+
+Mar 11 - Mar 15, 2019
++ add Insulation, Solar Hot Water, Smart Thermostats.
++ re-implement Jupyter donut chart using Vega.
++ fix small mismatches between Python & Excel
+  a) tam: PDS uses 'World' forecast for 2012-2014
+  b) tam: don't include 0.0 in the mean
+
+Mar 18 - Mar 22, 2019
++ add geo charts in Jupyter Adoption and TAM tabs.
++ implement logistic s-curve model support.
+
+Mar 25 - Mar 29, 2019
++ add ten solutions.
+  Building Automation, Smart Glass, Alternative Cement,
+  Bioplastic, Telepresence, Airplanes, Electric Vehicles,
+  High Speed Rail, Ships, and Silvopasture (first LAND
+  solution).
++ implement Bass Diffusion S-Curve support.
++ fix small mismatches between Python & Excel
+  a) new_iunits_reqd threshold checking
+  b) repeated cost for iunits (RRS v1.1c and later)
+
+Apr 1 - Apr 5, 2019
++ add eighteen solutions.
+  Bike Infrastructure, LEDs (Commercial), LEDs (Residential),
+  Refrigerant Management, Composting, Recycled Paper, Trains,
+  Water Efficiency, Carpooling, Trucks, District Heating,
+  Electric Bikes, Mass Transit, Walkable Cities, Water
+  Distribution, Wave and Tidal, plus Temperate Forests and
+  Tropical Forests.
++ fix small mismatches between Python & Excel
+  a) funit replacement checks current adoption
+  b) floating point ROUND() matching Excel, try #2
+  c) adoption & TAM support regional sums
+
+Apr 8 - Apr 12, 2019
++ Add three solutions.
+  Forest Protection, Cool Roofs, Green Roofs.
++ UI: add graphical overview of how the modules connect
+
+Apr 15 - Apr 19, 2019
++ Add ModelHealth dashboard with overall statistics about solution models.
++ Add four solutions
+  Tropical Tree Staples, Heat Pumps, Conservation Agriculture,
+  Regenerative Agriculture.
++ Fix small discrepancies between Python and Excel:
+  a) OperatingCost conversion factor
+  b) ignore first cost differences less than one penny
+
+Apr 22 - Apr 26, 2019
++ Add eleven solutions
+  Improved Rice, Multistrata Agriculture, Bamboo, Tree Intercropping,
+  Managed Grazing, Afforestation, Nutrient Management, Irrigation
+  Efficiency, Peatlands.
++ Add chart of linearity of adoption data to ModelHealth.
++ wrote [HOWTO / Getting Started guide](https://docs.google.com/document/d/1uavVbXPTssHceoJcVP0gWlb6Ms8ElFsvMpeH6p1K1Ng/comment)

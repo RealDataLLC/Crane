@@ -1,0 +1,7 @@
+venv
+.history
+.pytest_cache
+__pycache__
+*.pyc
+*.pyo
+.DS_Store
