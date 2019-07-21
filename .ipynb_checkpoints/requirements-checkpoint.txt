@@ -1,2 +1,6 @@
 gspread
 oauth2client
+tabula
+pandas
+numpy
+regex
